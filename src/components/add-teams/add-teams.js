@@ -93,6 +93,9 @@ class AddTeams extends Component {
       this.setState(new_state);
   }
 
+
+  //TODO add method to redirect to next state of process
+    
   updatePlayerValue(index, e) {
       var player_name = e.target.value;
 
