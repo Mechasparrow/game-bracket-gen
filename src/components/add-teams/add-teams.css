@@ -1,0 +1,9 @@
+.player-input {
+    padding: 8px;
+}
+
+.player-inputs {
+    max-width: 50rem;
+    margin-left: auto;
+    margin-right: auto;
+}
