@@ -1,0 +1,14 @@
+.new-bracket {
+  margin-top: 2em;
+}
+
+.player-count-input {
+  padding: 16px;
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.name-input {
+  padding: 8px;
+}
