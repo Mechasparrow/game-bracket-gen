@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import './New-Bracket.css';
 
+// import route Components here
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Switch,
+  Redirect
+} from 'react-router-dom'
 
 class PlayerCountInput extends Component {
 
@@ -27,11 +35,13 @@ class NewBracket extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      player_count: 0
+      player_count: 0,
+      nextSection: false
     }
 
     this.updatePlayerCount = this.updatePlayerCount.bind(this);
     this.nextSection = this.nextSection.bind(this);
+    this.renderNextArea = this.renderNextArea.bind(this);
   }
 
   updatePlayerCount (e) {
@@ -48,12 +58,32 @@ class NewBracket extends Component {
 
     var player_count = this.state.player_count;
 
+    var new_state = this.state;
+
     if (player_count > 0) {
-      alert("next sections");
+      new_state.nextSection = true
     }else {
-      alert("not correct");
+      new_state.nextSection = false
     }
 
+    this.setState(new_state);
+
+  }
+
+  renderNextArea() {
+    var next_session = this.state.nextSection;
+
+    if (next_session) {
+      return (
+          <Redirect push to = {{
+            pathname: '/add-teams',
+            state: {
+              from : this.props.location,
+              player_count: this.state.player_count
+            }
+          }}/>
+      )
+    }
 
   }
 
@@ -67,9 +97,11 @@ class NewBracket extends Component {
 
         <hr></hr>
 
-        <button onClick = {this.nextSection} class = "btn btn-primary">
+        <button onClick = {this.nextSection} className = "btn btn-primary">
           Next
         </button>
+
+        {this.renderNextArea()}
 
       </div>
     );
