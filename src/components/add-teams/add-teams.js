@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import './add-teams.css';
 
+import Bracket from '../../lib/bracket.js';
 
-// import route Components here
+// Import route Components here
 import {
     BrowserRouter as Router,
     Route,
@@ -142,8 +143,13 @@ class AddTeams extends Component {
 
   submitPlayers() {
       var players = this.state.players;
+      //alert(players);
 
-      alert(players);
+      var starting_bracket = Bracket.generateStartingBracket(players);
+
+      console.log(starting_bracket);
+
+      
   }
 
   render() {

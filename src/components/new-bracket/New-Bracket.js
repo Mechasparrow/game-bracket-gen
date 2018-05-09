@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './New-Bracket.css';
 
+import Bracket from '../../lib/bracket.js';
+
 // import route Components here
 import {
   BrowserRouter as Router,
