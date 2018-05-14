@@ -49,7 +49,8 @@ class AddTeams extends Component {
     this.state = {
       player_count: player_count,
       players: [],
-      back: false
+      back: false,
+      bracket: null
     };
 
     var updatedState = this.state;
@@ -61,11 +62,13 @@ class AddTeams extends Component {
 
     this.updatePlayerValue = this.updatePlayerValue.bind(this);
 
-    this.submitPlayers = this.submitPlayers.bind(this);
 
+    //Bracket gen and submission
+    this.generateBracket = this.generateBracket.bind(this);
+    this.redirectToMatchView = this.redirectToMatchView.bind(this);
 
-   this.goBack = this.goBack.bind(this);
-   this.backRedirect = this.backRedirect.bind(this);
+    this.goBack = this.goBack.bind(this);
+    this.backRedirect = this.backRedirect.bind(this);
 
   }
 
@@ -141,12 +144,39 @@ class AddTeams extends Component {
       return player_inputs;
   }
 
-  submitPlayers() {
+  generateBracket() {
       var players = this.state.players;
 
       var starting_bracket = new Bracket(players);
 
+      var the_new_state = this.state;
 
+      the_new_state.bracket = starting_bracket;
+
+      this.setState(the_new_state);
+
+  }
+
+  redirectToMatchView() {
+    var the_state = this.state;
+
+    if (the_state.bracket !== null) {
+      return (
+        <div className = "bracket-div-redirect">
+          <Redirect push to = {{
+              pathname: '/match-view',
+              state: {
+                  from: this.props.location,
+                  current_bracket: this.state.bracket
+              }
+          }}/>
+        </div>
+      )
+    }else {
+      return (
+        <div className = "bracket-div-redirect"></div>
+      )
+    }
 
   }
 
@@ -177,9 +207,11 @@ class AddTeams extends Component {
             {this.generatePlayerInputs()}
         </div>
 
-        <button onClick = {this.submitPlayers} className = "btn btn-success">
+        <button onClick = {this.generateBracket} className = "btn btn-success">
           Submit
         </button>
+
+        {this.redirectToMatchView()}
       </div>
     );
   }

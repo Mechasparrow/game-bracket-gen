@@ -12,7 +12,7 @@ import {
 // Import other components
 import NewBracket from './components/new-bracket/New-Bracket';
 import AddTeams from './components/add-teams/add-teams';
-
+import MatchView from './components/match-view/match-view';
 
 class App extends Component {
 
@@ -28,6 +28,7 @@ class App extends Component {
           <div>
             <Route exact path="/" component={NewBracket}/>
             <Route path='/add-teams' component={AddTeams}/>
+            <Route path = "/match-view" component={MatchView}/>
           </div>
         </Router>
 

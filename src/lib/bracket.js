@@ -13,6 +13,69 @@ class Bracket {
       this.current_round = 1;
     }
 
+    getUncompletedMatchFromCurrentRound() {
+
+      var uncompleted_matchs = this.getUncompletedMatchsForRound(this.current_round - 1);
+
+      var random_match = uncompleted_matchs[Math.floor(Math.random()*uncompleted_matchs.length)]
+
+      return random_match;
+
+    }
+
+    getUncompletedMatchsForRound(round_idx) {
+
+      var matchs = this.rounds_list[round_idx];
+
+      var uncompleted_matchs = matchs.filter(function (match) {
+        return match.matchEnded() == false;
+      })
+
+      return uncompleted_matchs;
+    }
+
+    currentRoundCompleted() {
+
+      return (this.getRoundCompleted(this.current_round - 1));
+
+    }
+
+    getRoundCompleted(round_idx) {
+
+      var uncompleted_matchs = this.getUncompletedMatchsForRound(round_idx);
+
+      return (uncompleted_matchs.length == 0);
+
+    }
+
+    bracketEnded() {
+
+      var bracket_ended = true;
+
+      for (var i = 0; i < this.rounds_cnt; i ++) {
+
+        var round_completed = this.getRoundCompleted(i);
+
+        if (round_completed == false){
+          bracket_ended = false;
+        }else {
+          continue;
+        }
+
+      }
+
+      return bracket_ended;
+
+    }
+
+    nextRound() {
+      if (this.current_round != this.rounds_cnt) {
+        this.current_round += 1;
+      }else {
+        //Drop dead
+      }
+    }
+
     static generateStartingBracket(players_list) {
 
         var players_length = players_list.length;
@@ -22,8 +85,6 @@ class Bracket {
         var empty_rounds = Bracket.generateEmptyBracket(players_length, rounds_count);
 
         var completed_rounds = empty_rounds.slice(0);
-        alert(completed_rounds);
-
         var players_left = players_list.slice(0);
 
         for (var i = 0; i < completed_rounds[0].length; i ++) {
