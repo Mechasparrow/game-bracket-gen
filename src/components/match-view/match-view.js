@@ -113,7 +113,6 @@ class MatchView extends Component {
   }
 
   // Function that completes the match with either player_one or player_two as the winner
-  // TODO
   completeMatch(winner) {
 
     var current_match = this.state.current_match;
@@ -135,6 +134,7 @@ class MatchView extends Component {
 
   render() {
 
+    //TODO implement redirect to bracket win Component;
     if (this.state.bracket_completed) {
       return (
         <div className = "container-fluid">
