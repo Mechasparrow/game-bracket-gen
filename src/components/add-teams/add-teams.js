@@ -82,11 +82,11 @@ class AddTeams extends Component {
                       from : this.props.location,
                   }
           }}/>);
-          
+
       }
 
   }
-    
+
   goBack() {
 
       var new_state = this.state;
@@ -96,7 +96,7 @@ class AddTeams extends Component {
 
 
   //TODO add method to redirect to next state of process
-    
+
   updatePlayerValue(index, e) {
       var player_name = e.target.value;
 
@@ -143,13 +143,11 @@ class AddTeams extends Component {
 
   submitPlayers() {
       var players = this.state.players;
-      //alert(players);
 
-      var starting_bracket = Bracket.generateStartingBracket(players);
+      var starting_bracket = new Bracket(players);
 
-      console.log(starting_bracket);
 
-      
+
   }
 
   render() {
@@ -159,7 +157,7 @@ class AddTeams extends Component {
 
         <h1>Add Teams</h1>
 
-        
+
         <div className = "back-elem">
           <button onClick = {this.goBack} className = "btn btn-danger">
             Back
@@ -167,10 +165,10 @@ class AddTeams extends Component {
 
 
           {this.backRedirect()}
-          
+
         </div>
-        
-        
+
+
         <h2>Player Count {this.state.player_count}</h2>
 
         <hr></hr>
