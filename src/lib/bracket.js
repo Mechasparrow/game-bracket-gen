@@ -17,9 +17,13 @@ class Bracket {
 
       var uncompleted_matchs = this.getUncompletedMatchsForRound(this.current_round - 1);
 
-      var random_match = uncompleted_matchs[Math.floor(Math.random()*uncompleted_matchs.length)]
+      if (uncompleted_matchs.length != 0) {
+        var random_match = uncompleted_matchs[Math.floor(Math.random()*uncompleted_matchs.length)]
 
-      return random_match;
+        return random_match;
+      }else {
+        return null;
+      }
 
     }
 
@@ -27,7 +31,11 @@ class Bracket {
 
       var matchs = this.rounds_list[round_idx];
 
-      var uncompleted_matchs = matchs.filter(function (match) {
+      var uncompleted_matchs = matchs.map (function (match, index) {
+        var the_match = match;
+        the_match.match_index = index;
+        return the_match;
+      }).filter(function (match) {
         return match.matchEnded() == false;
       })
 
@@ -65,6 +73,55 @@ class Bracket {
       }
 
       return bracket_ended;
+
+    }
+
+    getBracketWinner() {
+
+      if (this.bracketEnded()) {
+        var rounds = this.rounds_list.length;
+
+        var final_round = this.rounds_list[rounds - 1];
+
+        var winner = final_round[0].getWinner();
+
+        return winner;
+      }else {
+        return undefined;
+      }
+
+    }
+
+    generateNextRound() {
+
+      var matchs = this.rounds_list[this.current_round - 1];
+      var winners = matchs.map (function (match) {
+        return match.getWinner();
+      })
+
+      var winners_left = winners.slice(0);
+
+      var next_round_matchs = this.rounds_list[this.current_round].slice(0);
+
+      var updated_matchs = next_round_matchs.map (function (match) {
+
+        var player_one;
+        var player_two;
+
+        if (winners_left.length >= 2) {
+            player_one = winners_left.pop();
+            player_two = winners_left.pop();
+        }else {
+            player_one = winners_left.pop();
+            player_two = null;
+        }
+
+        var match = new Match(player_one, player_two);
+        return match;
+
+      })
+
+      this.rounds_list[this.current_round] = updated_matchs;
 
     }
 
