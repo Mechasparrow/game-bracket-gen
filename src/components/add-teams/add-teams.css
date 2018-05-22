@@ -2,13 +2,14 @@
     padding: 8px;
 }
 
+
 .back-elem {
     max-width: 40rem;
     margin-left: auto;
     margin-right: auto;
 }
 
-.player-inputs {
+.player-inputs, .alert {
     max-width: 50rem;
     margin-left: auto;
     margin-right: auto;

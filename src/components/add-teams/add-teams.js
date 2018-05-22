@@ -70,6 +70,9 @@ class AddTeams extends Component {
     this.goBack = this.goBack.bind(this);
     this.backRedirect = this.backRedirect.bind(this);
 
+    this.renderInputsValidation = this.renderInputsValidation.bind(this);
+    this.validatePlayerInputs = this.validatePlayerInputs.bind(this);
+      
   }
 
 
@@ -96,9 +99,6 @@ class AddTeams extends Component {
       new_state.back = true;
       this.setState(new_state);
   }
-
-
-  //TODO add method to redirect to next state of process
 
   updatePlayerValue(index, e) {
       var player_name = e.target.value;
@@ -144,6 +144,36 @@ class AddTeams extends Component {
       return player_inputs;
   }
 
+  validatePlayerInputs() {
+
+      var player_inputs_valid = true;
+
+      var players = this.state.players;
+
+      players.map(function (player) {
+	  if (player != "") {
+	      //Keep going
+	  }else {
+	      player_inputs_valid = false
+	  }
+      });
+
+      return player_inputs_valid;
+      
+  }
+
+  renderInputsValidation() {
+
+      var valid_inputs = this.validatePlayerInputs();
+
+      if (valid_inputs) {
+	  return (<div className = "alert alert-success">Valid Inputs</div>);
+      }else {
+	  return (<div className = "alert alert-danger">Invalid Inputs</div>);
+      }
+      
+  }
+    
   generateBracket() {
       var players = this.state.players;
 
@@ -187,7 +217,6 @@ class AddTeams extends Component {
 	<br></br>
         <h1>Add {this.state.player_count} Teams or Players</h1>
 
-
         <div className = "back-elem">
           <button onClick = {this.goBack} className = "btn btn-block btn-danger">
             Back
@@ -197,9 +226,13 @@ class AddTeams extends Component {
           {this.backRedirect()}
 
         </div>
-
+	
 	<br></br>
 
+	
+	{this.renderInputsValidation()}
+
+	
         <div className = "player-inputs">
             {this.generatePlayerInputs()}
         </div>
