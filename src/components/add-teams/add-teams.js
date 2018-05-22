@@ -184,12 +184,12 @@ class AddTeams extends Component {
     return (
       <div className = "add-teams container-fluid">
 
-
-        <h1>Add Teams</h1>
+	<br></br>
+        <h1>Add {this.state.player_count} Teams or Players</h1>
 
 
         <div className = "back-elem">
-          <button onClick = {this.goBack} className = "btn btn-danger">
+          <button onClick = {this.goBack} className = "btn btn-block btn-danger">
             Back
           </button>
 
@@ -198,15 +198,13 @@ class AddTeams extends Component {
 
         </div>
 
-
-        <h2>Player Count {this.state.player_count}</h2>
-
-        <hr></hr>
+	<br></br>
 
         <div className = "player-inputs">
             {this.generatePlayerInputs()}
         </div>
 
+	<br></br>
         <button onClick = {this.generateBracket} className = "btn btn-success">
           Submit
         </button>
