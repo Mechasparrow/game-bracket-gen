@@ -44,7 +44,7 @@ class MatchView extends Component {
     this.getNewMatch = this.getNewMatch.bind(this);
     this.goHomeRedirect = this.goHomeRedirect.bind(this);
     this.completeMatch = this.completeMatch.bind(this);
-
+    this.redirectToGameWon = this.redirectToGameWon.bind(this);
 
     if (this.state.current_bracket != undefined) {
       this.getNewMatch();
@@ -132,16 +132,29 @@ class MatchView extends Component {
 
   }
 
+  redirectToGameWon() {
+
+      return (
+
+	  <Redirect push to = {{
+	      pathname: '/game-won',
+	      state: {
+		  from: this.props.location,
+		  winner_name: this.state.current_bracket.getBracketWinner()
+	      }
+	  }}/>
+
+	  
+      );
+      
+      
+  }
+    
   render() {
 
     //TODO implement redirect to bracket win Component;
     if (this.state.bracket_completed) {
-      return (
-        <div className = "container-fluid">
-          <h1>Game Completed</h1>
-          <h2>Winner {this.state.current_bracket.getBracketWinner()}</h2>
-        </div>
-      )
+      return this.redirectToGameWon();
     }
 
     if (this.state.current_bracket != undefined) {
