@@ -40,6 +40,7 @@ class MatchView extends Component {
 
     //Complete the match
     this.completeMatch = this.completeMatch.bind(this);
+    this.prematureMatchCheck = this.prematureMatchCheck.bind(this);
 
 
   }
@@ -64,6 +65,11 @@ class MatchView extends Component {
   componentWillReceiveProps(nextProps) {
 
     if (nextProps.bracket.currentRoundCompleted() == false) {
+
+      if (nextProps.current_match.winner === null) {
+          this.prematureMatchCheck(nextProps);
+      }
+
       if (nextProps.current_match.winner !== null && nextProps.current_match_completed === false) {
         nextProps.completeCurrentMatch(nextProps.current_match, nextProps.current_match.match_index);
       }else if (nextProps.current_match_completed === true) {
@@ -77,6 +83,23 @@ class MatchView extends Component {
         alert("Tournament end!");
       }
 
+    }
+
+  }
+
+  prematureMatchCheck(props) {
+
+    var current_match = props.current_match;
+
+    if (current_match.player_one === null && current_match.player_two === null) {
+      this.completeMatch(Match.PLAYER_ONE);
+    }else if (current_match.player_one == null) {
+      this.completeMatch(Match.PLAYER_TWO);
+    }else if (current_match.player_two == null) {
+      this.completeMatch(Match.PLAYER_ONE);
+    }else {
+      //Don't do anything
+      // Because this will just be handled by the user instead
     }
 
   }
