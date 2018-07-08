@@ -10,10 +10,12 @@ import {
 } from 'react-router-dom'
 
 // Import other components
-import NewBracket from './components/new-bracket/New-Bracket';
-import AddTeams from './components/add-teams/add-teams';
 import MatchView from './components/match-view/match-view';
 import GameWon from './components/game-won/game-won';
+
+//Import containers
+import NewBracketContainer from './containers/NewBracketContainer';
+import AddTeamsContainer from './containers/AddTeamsContainer'
 
 class App extends Component {
 
@@ -27,8 +29,8 @@ class App extends Component {
       <div className="App">
         <Router>
           <div>
-            <Route exact path="/" component={NewBracket}/>
-            <Route path='/add-teams' component={AddTeams}/>
+            <Route exact path="/" component={NewBracketContainer}/>
+            <Route path='/add-teams' component={AddTeamsContainer}/>
             <Route path = "/match-view" component={MatchView}/>
             <Route path = "/game-won" component={GameWon}/>
           </div>

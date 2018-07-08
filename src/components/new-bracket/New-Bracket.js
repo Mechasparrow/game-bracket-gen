@@ -17,6 +17,7 @@ class PlayerCountInput extends Component {
   constructor(props) {
     super(props);
 
+
   }
 
 
@@ -43,11 +44,14 @@ class NewBracket extends Component {
 
     this.updatePlayerCount = this.updatePlayerCount.bind(this);
 
-      this.renderFormValidation = this.renderFormValidation.bind(this);  
+    this.renderFormValidation = this.renderFormValidation.bind(this);
     this.validPlayerCount = this.validPlayerCount.bind(this);
     this.nextSection = this.nextSection.bind(this);
 
     this.renderNextArea = this.renderNextArea.bind(this);
+
+    console.log(props);
+
   }
 
   updatePlayerCount (e) {
@@ -55,9 +59,8 @@ class NewBracket extends Component {
 
     var player_count = parseInt(value) || 0;
 
-    var new_state = this.state;
-    new_state.player_count = player_count;
-    this.setState(new_state);
+    this.props.updatePlayerCount(player_count);
+
   }
 
   renderFormValidation() {
@@ -77,15 +80,15 @@ class NewBracket extends Component {
 	          </div>
 	  )
       }
-      
+
   }
-    
+
   validPlayerCount() {
-      var player_count = this.state.player_count;
+      var player_count = this.props.player_count
 
       return (player_count > 1);
   }
-    
+
   nextSection () {
 
     var new_state = this.state;
@@ -105,7 +108,6 @@ class NewBracket extends Component {
             pathname: '/add-teams',
             state: {
               from : this.props.location,
-              player_count: this.state.player_count
             }
           }}/>
       )
@@ -118,14 +120,14 @@ class NewBracket extends Component {
       <div className="new-bracket container-fluid">
         <h1>New Bracket</h1>
 
-	
+
 	{this.renderFormValidation()}
-	
+
         <PlayerCountInput updatePlayerCount = {this.updatePlayerCount}></PlayerCountInput>
-        <h2>Player Count {this.state.player_count}</h2>
+        <h2>Player Count {this.props.player_count}</h2>
 
         <hr></hr>
-	
+
         <button onClick = {this.nextSection} className = "btn btn-primary">
           Next
         </button>

@@ -40,7 +40,7 @@ class AddTeams extends Component {
     var player_count;
 
     try {
-        player_count = this.props.location.state.player_count;
+        player_count = this.props.player_count;
     }catch (err) {
         player_count = 0;
         console.log(err);
@@ -72,7 +72,7 @@ class AddTeams extends Component {
 
     this.renderInputsValidation = this.renderInputsValidation.bind(this);
     this.validatePlayerInputs = this.validatePlayerInputs.bind(this);
-      
+
   }
 
 
@@ -137,7 +137,7 @@ class AddTeams extends Component {
       var player_inputs = [];
 
       for (var i = 0; i < player_list_length; i ++) {
-          player_inputs.push ( <PlayerInput index = {i} updatePlayerValue = {this.updatePlayerValue}>
+          player_inputs.push ( <PlayerInput key = {i} index = {i} updatePlayerValue = {this.updatePlayerValue}>
                    </PlayerInput> );
       }
 
@@ -159,7 +159,7 @@ class AddTeams extends Component {
       });
 
       return player_inputs_valid;
-      
+
   }
 
   renderInputsValidation() {
@@ -171,9 +171,9 @@ class AddTeams extends Component {
       }else {
 	  return (<div className = "alert alert-danger">Invalid Inputs</div>);
       }
-      
+
   }
-    
+
   generateBracket() {
       var players = this.state.players;
 
@@ -226,13 +226,13 @@ class AddTeams extends Component {
           {this.backRedirect()}
 
         </div>
-	
+
 	<br></br>
 
-	
+
 	{this.renderInputsValidation()}
 
-	
+
         <div className = "player-inputs">
             {this.generatePlayerInputs()}
         </div>
