@@ -42,7 +42,6 @@ class MatchView extends Component {
     this.completeMatch = this.completeMatch.bind(this);
     this.prematureMatchCheck = this.prematureMatchCheck.bind(this);
 
-
   }
 
   goHomeRedirect() {
@@ -89,6 +88,7 @@ class MatchView extends Component {
 
   prematureMatchCheck(props) {
 
+    console.log("premature match check");
     var current_match = props.current_match;
 
     if (current_match.player_one === null && current_match.player_two === null) {
