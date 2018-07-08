@@ -3,6 +3,8 @@ import './add-teams.css';
 
 import Bracket from '../../lib/bracket.js';
 
+import _ from "lodash";
+
 // Import route Components here
 import {
     BrowserRouter as Router,
@@ -17,16 +19,27 @@ class PlayerInput extends Component {
   constructor(props) {
       super(props);
 
+      this.playerInputChange = this.playerInputChange.bind(this);
+
   }
+
+  playerInputChange(e) {
+    const input_value = e.target.value;
+    const idx = this.props.index;
+
+
+    this.props.updatePlayerValue(idx, input_value);
+
+  }
+
 
   render() {
     return (
         <div className = "player-input">
-            <input className = "form-control" onChange = {this.props.updatePlayerValue.bind(this, this.props.index)}/>
+            <input className = "form-control" value = {this.props.value} onChange = {this.playerInputChange.bind(this)}/>
         </div>
     );
   }
-
 
 }
 
@@ -35,36 +48,13 @@ class AddTeams extends Component {
   constructor(props) {
     super(props);
 
-    this.generateEmptyPlayerList = this.generateEmptyPlayerList.bind(this);
-
-    var player_count;
-
-    try {
-        player_count = this.props.player_count;
-    }catch (err) {
-        player_count = 0;
-        console.log(err);
-    }
+    props.genEmptyTeams(props.player_count);
 
     this.state = {
-      player_count: player_count,
-      players: [],
       back: false,
-      bracket: null
     };
 
-    var updatedState = this.state;
-    updatedState.players = this.generateEmptyPlayerList(this.state.player_count);
 
-
-    //Function declarations
-    this.setState(updatedState);
-
-    this.updatePlayerValue = this.updatePlayerValue.bind(this);
-
-
-    //Bracket gen and submission
-    this.generateBracket = this.generateBracket.bind(this);
     this.redirectToMatchView = this.redirectToMatchView.bind(this);
 
     this.goBack = this.goBack.bind(this);
@@ -72,6 +62,10 @@ class AddTeams extends Component {
 
     this.renderInputsValidation = this.renderInputsValidation.bind(this);
     this.validatePlayerInputs = this.validatePlayerInputs.bind(this);
+
+    if (this.props.player_count <= 0) {
+      this.goBack();
+    }
 
   }
 
@@ -100,65 +94,41 @@ class AddTeams extends Component {
       this.setState(new_state);
   }
 
-  updatePlayerValue(index, e) {
-      var player_name = e.target.value;
-
-      var player_list = this.state.players;
-
-      var player_index = index;
-
-      var new_state = this.state;
-
-      player_list[player_index] = player_name;
-
-      new_state.players = player_list;
-
-      this.setState(new_state);
-  }
-
-  generateEmptyPlayerList(length) {
-
-    var player_list = [];
-
-    for (var i = 0; i < length; i ++) {
-        player_list.push(
-                ""
-        );
-    }
-
-    return player_list;
-
-  }
 
   generatePlayerInputs() {
 
-      var player_list_length = this.state.players.length;
+      var player_list_length = this.props.player_count;
 
       var player_inputs = [];
 
       for (var i = 0; i < player_list_length; i ++) {
-          player_inputs.push ( <PlayerInput key = {i} index = {i} updatePlayerValue = {this.updatePlayerValue}>
+          player_inputs.push ( <PlayerInput key = {i} index = {i} value = {this.props.teams[i]} updatePlayerValue = {this.props.updateTeamByIdx}>
                    </PlayerInput> );
       }
 
       return player_inputs;
   }
 
+  //FIXME
   validatePlayerInputs() {
 
-      var player_inputs_valid = true;
+    var inputs_valid = true;
 
-      var players = this.state.players;
+    console.log("validating...");
 
-      players.map(function (player) {
-	  if (player != "") {
-	      //Keep going
-	  }else {
-	      player_inputs_valid = false
-	  }
-      });
+    var teams = _.values(this.props.teams);
+    console.log(teams);
 
-      return player_inputs_valid;
+    teams.map (function (team) {
+
+      if (team != "") {
+        //keep going
+      }else {
+        inputs_valid = false;
+      }
+    });
+
+    return inputs_valid;
 
   }
 
@@ -174,22 +144,9 @@ class AddTeams extends Component {
 
   }
 
-  generateBracket() {
-      var players = this.state.players;
-
-      var starting_bracket = new Bracket(players);
-
-      var the_new_state = this.state;
-
-      the_new_state.bracket = starting_bracket;
-
-      this.setState(the_new_state);
-
-  }
-
   redirectToMatchView() {
     var the_state = this.state;
-
+    /**
     if (the_state.bracket !== null) {
       return (
         <div className = "bracket-div-redirect">
@@ -207,7 +164,7 @@ class AddTeams extends Component {
         <div className = "bracket-div-redirect"></div>
       )
     }
-
+    **/
   }
 
   render() {
