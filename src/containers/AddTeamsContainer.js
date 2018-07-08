@@ -1,11 +1,17 @@
 import {connect} from 'react-redux';
-import {updatePlayerNumber, generateEmptyTeams, updatePlayerByIdx} from '../actions';
+import {
+  updatePlayerNumber,
+  generateEmptyTeams,
+  updatePlayerByIdx,
+  generateBracket
+} from '../actions';
 
 import AddTeams from '../components/add-teams/add-teams';
 
 const mapStateToProps = state => ({
   player_count: state.player_amnt,
-  teams: state.teams
+  teams: state.teams,
+  bracket: state.bracket
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -14,6 +20,9 @@ const mapDispatchToProps = dispatch => ({
   },
   updateTeamByIdx: (idx, team) =>{
     dispatch(updatePlayerByIdx(idx, team))
+  },
+  genBracket: (teams) => {
+    dispatch(generateBracket(teams))
   }
 })
 

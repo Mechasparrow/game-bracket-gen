@@ -19,31 +19,12 @@ class MatchView extends Component {
   constructor(props) {
     super(props);
 
-    var bracket;
     var restart = false;
 
-    try {
-      bracket = this.props.location.state.current_bracket;
-      if ((bracket instanceof Bracket) == false){
-        throw "Not a valid bracket!";
-      }
-
-    }catch (err) {
-      bracket = undefined;
-      restart = true;
-      console.log(err);
-    }
-
     this.state = {
-      current_bracket: bracket,
-      current_match: null,
-      bracket_completed: false,
       restart: restart
     }
 
-    this.getNewMatch = this.getNewMatch.bind(this);
-    this.goHomeRedirect = this.goHomeRedirect.bind(this);
-    this.completeMatch = this.completeMatch.bind(this);
     this.redirectToGameWon = this.redirectToGameWon.bind(this);
 
     if (this.state.current_bracket != undefined) {
@@ -69,6 +50,7 @@ class MatchView extends Component {
 
   }
 
+  /**
   getNewMatch() {
 
     var new_state = this.state;
@@ -111,8 +93,10 @@ class MatchView extends Component {
 
 
   }
+  **/
 
   // Function that completes the match with either player_one or player_two as the winner
+  /**
   completeMatch(winner) {
 
     var current_match = this.state.current_match;
@@ -130,7 +114,7 @@ class MatchView extends Component {
     this.setState(new_state);
     this.getNewMatch()
 
-  }
+  }**/
 
   redirectToGameWon() {
 
@@ -144,15 +128,20 @@ class MatchView extends Component {
 	      }
 	  }}/>
 
-	  
+
       );
-      
-      
+
+
   }
-    
+
   render() {
 
+    return (
+      <h1>Match View</h1>
+    )
+
     //TODO implement redirect to bracket win Component;
+    /**
     if (this.state.bracket_completed) {
       return this.redirectToGameWon();
     }
@@ -193,7 +182,7 @@ class MatchView extends Component {
         </div>
       )
     }
-
+    **/
 
   }
 

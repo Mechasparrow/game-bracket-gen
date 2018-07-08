@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './add-teams.css';
 
 import Bracket from '../../lib/bracket.js';
+import PlayerInput from './player-input';
 
 import _ from "lodash";
 
@@ -14,35 +15,6 @@ import {
     Redirect
 } from 'react-router-dom'
 
-class PlayerInput extends Component {
-
-  constructor(props) {
-      super(props);
-
-      this.playerInputChange = this.playerInputChange.bind(this);
-
-  }
-
-  playerInputChange(e) {
-    const input_value = e.target.value;
-    const idx = this.props.index;
-
-
-    this.props.updatePlayerValue(idx, input_value);
-
-  }
-
-
-  render() {
-    return (
-        <div className = "player-input">
-            <input className = "form-control" value = {this.props.value} onChange = {this.playerInputChange.bind(this)}/>
-        </div>
-    );
-  }
-
-}
-
 class AddTeams extends Component {
 
   constructor(props) {
@@ -52,6 +24,7 @@ class AddTeams extends Component {
 
     this.state = {
       back: false,
+      bracket_generated: false
     };
 
 
@@ -62,6 +35,10 @@ class AddTeams extends Component {
 
     this.renderInputsValidation = this.renderInputsValidation.bind(this);
     this.validatePlayerInputs = this.validatePlayerInputs.bind(this);
+
+    this.generatePlayerInputs = this.generatePlayerInputs.bind(this);
+    this.generateBracket = this.generateBracket.bind(this);
+
 
     if (this.props.player_count <= 0) {
       this.goBack();
@@ -97,19 +74,36 @@ class AddTeams extends Component {
 
   generatePlayerInputs() {
 
-      var player_list_length = this.props.player_count;
+      var player_list_length = this.props.player_count
 
       var player_inputs = [];
 
       for (var i = 0; i < player_list_length; i ++) {
-          player_inputs.push ( <PlayerInput key = {i} index = {i} value = {this.props.teams[i]} updatePlayerValue = {this.props.updateTeamByIdx}>
+
+          var raw_team_value = this.props.teams[i];
+          var team_value = (raw_team_value !== undefined) ? raw_team_value : "";
+
+          player_inputs.push ( <PlayerInput key = {i} index = {i} value = {team_value} updatePlayerValue = {this.props.updateTeamByIdx}>
                    </PlayerInput> );
       }
 
       return player_inputs;
   }
 
-  //FIXME
+  generateBracket() {
+
+    console.log("generating bracket..");
+
+    var teams = this.props.teams;
+
+    this.props.genBracket(teams);
+
+    var new_state = Object.assign({}, this.state);
+    new_state.bracket_generated = true;
+    this.setState(new_state);
+
+  }
+
   validatePlayerInputs() {
 
     var inputs_valid = true;
@@ -146,8 +140,8 @@ class AddTeams extends Component {
 
   redirectToMatchView() {
     var the_state = this.state;
-    /**
-    if (the_state.bracket !== null) {
+
+    if (the_state.bracket_generated === true) {
       return (
         <div className = "bracket-div-redirect">
           <Redirect push to = {{
@@ -164,7 +158,7 @@ class AddTeams extends Component {
         <div className = "bracket-div-redirect"></div>
       )
     }
-    **/
+
   }
 
   render() {

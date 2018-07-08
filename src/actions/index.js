@@ -1,4 +1,11 @@
-import {UPDATE_PLAYER_NUMBER, ADD_PLAYER_TEAM, UPDATE_TEAMS, UPDATE_PLAYER_BY_IDX, GENERATE_EMPTY_TEAMS} from '../constants';
+import {
+  UPDATE_PLAYER_NUMBER,
+  ADD_PLAYER_TEAM,
+  UPDATE_TEAMS,
+  UPDATE_PLAYER_BY_IDX,
+  GENERATE_EMPTY_TEAMS,
+  GENERATE_BRACKET
+} from '../constants';
 
 export const updatePlayerNumber = number => ({
   type: UPDATE_PLAYER_NUMBER,
@@ -26,4 +33,9 @@ export const updatePlayerByIdx = (id, team) => ({
 export const generateEmptyTeams = (count) => ({
   type: GENERATE_EMPTY_TEAMS,
   count
+})
+
+export const generateBracket = (teams) => ({
+  type: GENERATE_BRACKET,
+  teams
 })
