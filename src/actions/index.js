@@ -4,7 +4,12 @@ import {
   UPDATE_TEAMS,
   UPDATE_PLAYER_BY_IDX,
   GENERATE_EMPTY_TEAMS,
-  GENERATE_BRACKET
+  GENERATE_BRACKET,
+  GET_CURRENT_MATCH,
+  COMPLETE_CURRENT_MATCH,
+  SET_CURRENT_MATCH_WINNER,
+  TRIGGER_NEW_ROUND,
+  NEW_GAME
 } from '../constants';
 
 export const updatePlayerNumber = number => ({
@@ -38,4 +43,28 @@ export const generateEmptyTeams = (count) => ({
 export const generateBracket = (teams) => ({
   type: GENERATE_BRACKET,
   teams
+})
+
+export const getCurrentMatch = (bracket) => ({
+  type: GET_CURRENT_MATCH,
+  bracket
+})
+
+export const completeCurrentMatch = (match,idx) => ({
+  type: COMPLETE_CURRENT_MATCH,
+  match,
+  idx
+})
+
+export const setCurrentMatchWinner = (winner) => ({
+  type: SET_CURRENT_MATCH_WINNER,
+  winner
+})
+
+export const triggerNewRound = () => ({
+  type: TRIGGER_NEW_ROUND
+})
+
+export const newGame = () => ({
+  type: NEW_GAME
 })

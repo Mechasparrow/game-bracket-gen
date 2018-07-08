@@ -19,17 +19,28 @@ class MatchView extends Component {
   constructor(props) {
     super(props);
 
+    console.log(props);
+
     var restart = false;
+
+    if (this.props.bracket == null) {
+      console.log("nonexistent bracket");
+      restart = true;
+    }else {
+      props.getCurrentMatch(props.bracket);
+    }
 
     this.state = {
       restart: restart
     }
 
+    //Redirects
     this.redirectToGameWon = this.redirectToGameWon.bind(this);
+    this.goHomeRedirect = this.goHomeRedirect.bind(this);
 
-    if (this.state.current_bracket != undefined) {
-      this.getNewMatch();
-    }
+    //Complete the match
+    this.completeMatch = this.completeMatch.bind(this);
+
 
   }
 
@@ -50,71 +61,29 @@ class MatchView extends Component {
 
   }
 
-  /**
-  getNewMatch() {
+  componentWillReceiveProps(nextProps) {
 
-    var new_state = this.state;
-
-    var new_match = this.state.current_bracket.getUncompletedMatchFromCurrentRound();
-
-    if (new_match != null) {
-      new_state.current_match = new_match;
-
-      if (new_state.current_match.player_one == null && new_state.current_match.player_two == null) {
-        this.completeMatch(Match.PLAYER_ONE);
-      }else if (new_state.current_match.player_one == null) {
-        this.completeMatch(Match.PLAYER_TWO);
-      }else if (new_state.current_match.player_two == null) {
-        this.completeMatch(Match.PLAYER_ONE);
-      }else {
-        this.setState(new_state)
+    if (nextProps.bracket.currentRoundCompleted() == false) {
+      if (nextProps.current_match.winner !== null && nextProps.current_match_completed === false) {
+        nextProps.completeCurrentMatch(nextProps.current_match, nextProps.current_match.match_index);
+      }else if (nextProps.current_match_completed === true) {
+        nextProps.getCurrentMatch(nextProps.bracket);
       }
-
     }else {
 
-      if (new_state.current_bracket.getRoundCompleted(new_state.current_bracket.current_round - 1)){
-        if (new_state.current_bracket.bracketEnded()) {
-          new_state.bracket_completed = true;
-          new_state.current_match = Match.generateEmptyMatch();
-        }else {
-
-          new_state.current_bracket.generateNextRound();
-          new_state.current_bracket.nextRound();
-
-          this.getNewMatch();
-        }
+      if (nextProps.bracket.bracketEnded() === false){
+        nextProps.newRound();
+      }else {
+        alert("Tournament end!");
       }
-
-      this.setState(new_state);
-
 
     }
 
-
-
   }
-  **/
 
-  // Function that completes the match with either player_one or player_two as the winner
-  /**
   completeMatch(winner) {
-
-    var current_match = this.state.current_match;
-
-    current_match.setWinner(winner);
-
-    var current_bracket = this.state.current_bracket;
-
-    var new_state = this.state;
-
-    current_bracket.rounds_list[current_bracket.current_round - 1][current_match.match_index] = current_match;
-
-    new_state.current_bracket = current_bracket;
-
-    this.setState(new_state);
-    this.getNewMatch()
-
-  }**/
+    this.props.setCurrentMatchWinner(winner);
+  }
 
   redirectToGameWon() {
 
@@ -123,8 +92,7 @@ class MatchView extends Component {
 	  <Redirect push to = {{
 	      pathname: '/game-won',
 	      state: {
-		  from: this.props.location,
-		  winner_name: this.state.current_bracket.getBracketWinner()
+		        from: this.props.location,
 	      }
 	  }}/>
 
@@ -136,22 +104,21 @@ class MatchView extends Component {
 
   render() {
 
-    return (
-      <h1>Match View</h1>
-    )
 
-    //TODO implement redirect to bracket win Component;
-    /**
-    if (this.state.bracket_completed) {
-      return this.redirectToGameWon();
+    if (this.props.bracket != null) {
+      if (this.props.bracket.bracketEnded()) {
+        return this.redirectToGameWon();
+      }
     }
 
-    if (this.state.current_bracket != undefined) {
+
+    if (this.props.bracket != null) {
       return (
         <div className = "container-fluid">
           <br/>
-          <h2>Round {this.state.current_bracket.current_round}</h2>
-          <h1 className = "match-title">{this.state.current_match.player_one} V {this.state.current_match.player_two}</h1>
+          <h2>Round {this.props.bracket.current_round}</h2>
+
+          <h1 className = "match-title">{this.props.current_match.player_one} V {this.props.current_match.player_two}</h1>
 
           <div className = "choice-buttons row">
             <div className = "col btn-option">
@@ -182,7 +149,7 @@ class MatchView extends Component {
         </div>
       )
     }
-    **/
+
 
   }
 

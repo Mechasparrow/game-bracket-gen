@@ -1,4 +1,10 @@
-import {ADD_PLAYER_TEAM, UPDATE_TEAMS, UPDATE_PLAYER_BY_IDX, GENERATE_EMPTY_TEAMS} from '../constants';
+import {
+  ADD_PLAYER_TEAM,
+  UPDATE_TEAMS,
+  UPDATE_PLAYER_BY_IDX,
+  GENERATE_EMPTY_TEAMS,
+  NEW_GAME
+} from '../constants';
 
 export const teams = (state = [], action) => {
 
@@ -23,6 +29,8 @@ export const teams = (state = [], action) => {
       }
 
       return team_arr;
+    case NEW_GAME:
+      return [];
     default:
       return state;
   }
